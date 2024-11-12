@@ -3,27 +3,44 @@ const CONTAINER_SELECTORS = [
   "#jobs-home-vertical-list__entity-list",
 ].join(", ");
 const JOB_CARD_SELECTOR = ".job-card-list--is-dismissed";
-let observer;
-let count = 0;
 
-function observeContainers(selector) {
-  observer = new MutationObserver(() => {
-    if (document.querySelectorAll(selector).length) {
-      removeJobCards(document.querySelectorAll(selector));
-    }
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-}
+const JobCardYeeter = {
+  observer: null,
+  count: 0,
 
-function removeJobCards(containers) {
-  containers.forEach((container) => {
-    container.querySelectorAll(JOB_CARD_SELECTOR).forEach((card) => {
-      card.remove();
-      count++;
-      console.log(`Removed ${count} job cards so far!`);
+  init(selector = "") {
+    this.hideDismissedJobs(document.querySelectorAll(selector));
+    this.initObserver(selector);
+  },
+
+  initObserver(selector) {
+    this.observer = new MutationObserver(() => {
+      if (document.querySelectorAll(selector).length) {
+        this.hideDismissedJobs(document.querySelectorAll(selector));
+      }
     });
-  });
-}
+    this.observer.observe(document.body, { childList: true, subtree: true });
+  },
 
-removeJobCards(document.querySelectorAll(CONTAINER_SELECTORS));
-observeContainers(CONTAINER_SELECTORS);
+  hideDismissedJobs(containers) {
+    containers.forEach((container) => {
+      container.querySelectorAll(JOB_CARD_SELECTOR).forEach((card) => {
+        card.remove();
+        this.updateCount();
+      });
+    });
+  },
+
+  updateCount() {
+    this.count++;
+    console.log(`Hidden ${this.count} jobs so far!`);
+  },
+
+  destroyObserver() {
+    this.observer.disconnect();
+    this.observer = null;
+    this.count = 0;
+  },
+};
+
+JobCardYeeter.init(CONTAINER_SELECTORS);
