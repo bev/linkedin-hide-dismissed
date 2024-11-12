@@ -11,5 +11,14 @@
     "32": "images/icon.png",
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://www.linkedin.com/jobs",
+        "https://www.linkedin.com/jobs/*"
+      ]
+    }
+  ]
 }
