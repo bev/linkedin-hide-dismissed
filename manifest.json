@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn Hide Dismissed",
+  "description": "Hide LinkedIn job listings that you have already dismissed.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "icon.svg"
+  }
+}
